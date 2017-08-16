@@ -981,14 +981,66 @@ Swap:         1535         37       1498
 root@b556839ea9cf:/#
 ```
 2. 查看接口为eth0-2的网卡信息
-
-
-3. 
 ```shell?linenums
-ansible 10.212.52.252 -m setup -a 'filter=ansible_*_mb'   #
-    ansible 10.212.52.252 -m setup -a 'filter=ansible_eth[0-2]'   //
-    ansible all -m setup --tree /tmp/facts   //将所有主机的信息输入到/tmp/facts目录下，每台主机的信息输入到主机名文件中（/etc/ansible/hosts里的主机名）
-三、file模块
+root@b556839ea9cf:/# ansible 172.17.0.3 -m setup -a 'filter=ansible_eth[0-2]' -k
+SSH password:
+172.17.0.3 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_eth0": {
+            "active": true,
+            "device": "eth0",
+            "features": {},
+            "ipv4": {
+                "address": "172.17.0.3",
+                "broadcast": "global",
+                "netmask": "255.255.0.0",
+                "network": "172.17.0.0"
+            },
+            "macaddress": "02:42:ac:11:00:03",
+            "mtu": 1500,
+            "promisc": false,
+            "speed": 10000,
+            "type": "ether"
+        }
+    },
+    "changed": false
+}
+root@b556839ea9cf:/# ansible 172.17.0.3 -a 'ifconfig'
+172.17.0.3 | SUCCESS | rc=0 >>
+eth0      Link encap:Ethernet  HWaddr 02:42:ac:11:00:03
+          inet addr:172.17.0.3  Bcast:0.0.0.0  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:1223 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:1231 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:1212530 (1.2 MB)  TX bytes:178882 (178.8 KB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+root@b556839ea9cf:/#
+```
+
+3. 将所有主机的信息输入到/tmp目录下，每台主机的信息输入到主机名文件中
+```shell?linenums
+root@b556839ea9cf:/# ansible all -m setup --tree /tmp -k
+...
+root@b556839ea9cf:/# ls /tmp -l
+total 24
+-rw-r--r--. 1 root root 7545 Aug 14 23:16 172.17.0.3
+-rw-r--r--. 1 root root 7545 Aug 14 23:16 172.17.0.4
+-rw-r--r--. 1 root root 7545 Aug 14 23:16 172.17.0.5
+root@b556839ea9cf:/# less /tmp/172.17.0.4
+root@b556839ea9cf:/#
+...
+```
+
+## file模块
 file模块主要用于远程主机上的文件操作，file模块包含如下选项： 
 force：需要在两种情况下强制创建软链接，一种是源文件不存在但之后会建立的情况下；另一种是目标软链接已存在,需要先取消之前的软链，然后创建新的软链，有两个选项：yes|no 
 group：定义文件/目录的属组 
