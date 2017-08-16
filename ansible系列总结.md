@@ -622,10 +622,371 @@ ansible all -B 1800 -P 60 -a "/usr/bin/long_running_operation --do-stuff" #后�
 ```shell?linenums
 ansible test -m ping
 ```
-二、setup模块
-setup模块，主要用于获取主机信息，在playbooks里经常会用到的一个参数gather_facts就与该模块相关。setup模块下经常使用的一个参数是filter参数，具体使用示例如下：
-ansible 10.212.52.252 -m setup -a 'filter=ansible_*_mb'   //查看主机内存信息
-    ansible 10.212.52.252 -m setup -a 'filter=ansible_eth[0-2]'   //查看地接口为eth0-2的网卡信息
+## setup模块
+setup模块，主要用于获取主机信息，在playbooks里经常会用到的一个参数gather_facts就与该模块相关。
+setup模块下经常使用的一个参数是filter参数，具体使用示例如下：
+```shell?linenums
+root@b556839ea9cf:/# ansible 172.17.0.3 -m setup
+172.17.0.3 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_all_ipv4_addresses": [
+            "172.17.0.3"
+        ],
+        "ansible_all_ipv6_addresses": [],
+        "ansible_apparmor": {
+            "status": "disabled"
+        },
+        "ansible_architecture": "x86_64",
+        "ansible_bios_date": "12/01/2006",
+        "ansible_bios_version": "VirtualBox",
+        "ansible_cmdline": {
+            "BOOT_IMAGE": "/vmlinuz-3.10.0-514.10.2.el7.x86_64",
+            "biosdevname": "0",
+            "console": "ttyS0,115200",
+            "crashkernel": "auto",
+            "net.ifnames": "0",
+            "no_timer_check": true,
+            "quiet": true,
+            "rd.lvm.lv": "VolGroup00/LogVol01",
+            "rhgb": true,
+            "ro": true,
+            "root": "/dev/mapper/VolGroup00-LogVol00"
+        },
+        "ansible_date_time": {
+            "date": "2017-08-14",
+            "day": "14",
+            "epoch": "1502752176",
+            "hour": "23",
+            "iso8601": "2017-08-14T23:09:36Z",
+            "iso8601_basic": "20170814T230936076979",
+            "iso8601_basic_short": "20170814T230936",
+            "iso8601_micro": "2017-08-14T23:09:36.077056Z",
+            "minute": "09",
+            "month": "08",
+            "second": "36",
+            "time": "23:09:36",
+            "tz": "UTC",
+            "tz_offset": "+0000",
+            "weekday": "Monday",
+            "weekday_number": "1",
+            "weeknumber": "33",
+            "year": "2017"
+        },
+        "ansible_default_ipv4": {
+            "address": "172.17.0.3",
+            "alias": "eth0",
+            "broadcast": "global",
+            "gateway": "172.17.0.1",
+            "interface": "eth0",
+            "macaddress": "02:42:ac:11:00:03",
+            "mtu": 1500,
+            "netmask": "255.255.0.0",
+            "network": "172.17.0.0",
+            "type": "ether"
+        },
+        "ansible_default_ipv6": {},
+        "ansible_devices": {
+            "sda": {
+                "holders": [],
+                "host": "",
+                "model": "VBOX HARDDISK",
+                "partitions": {
+                    "sda1": {
+                        "holders": [],
+                        "sectors": "2048",
+                        "sectorsize": 512,
+                        "size": "1.00 MB",
+                        "start": "2048",
+                        "uuid": null
+                    },
+                    "sda2": {
+                        "holders": [],
+                        "sectors": "2097152",
+                        "sectorsize": 512,
+                        "size": "1.00 GB",
+                        "start": "4096",
+                        "uuid": null
+                    },
+                    "sda3": {
+                        "holders": [
+                            "VolGroup00-LogVol00",
+                            "VolGroup00-LogVol01"
+                        ],
+                        "sectors": "81784832",
+                        "sectorsize": 512,
+                        "size": "39.00 GB",
+                        "start": "2101248",
+                        "uuid": null
+                    }
+                },
+                "removable": "0",
+                "rotational": "1",
+                "sas_address": null,
+                "sas_device_handle": null,
+                "scheduler_mode": "cfq",
+                "sectors": "83886080",
+                "sectorsize": "512",
+                "size": "40.00 GB",
+                "support_discard": "0",
+                "vendor": "ATA"
+            }
+        },
+        "ansible_distribution": "Ubuntu",
+        "ansible_distribution_major_version": "14",
+        "ansible_distribution_release": "trusty",
+        "ansible_distribution_version": "14.04",
+        "ansible_dns": {
+            "nameservers": [
+                "10.0.2.3",
+                "192.168.10.1"
+            ]
+        },
+        "ansible_domain": "",
+        "ansible_effective_group_id": 0,
+        "ansible_effective_user_id": 0,
+        "ansible_env": {
+            "HOME": "/root",
+            "LOGNAME": "root",
+            "MAIL": "/var/mail/root",
+            "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games",
+            "PWD": "/root",
+            "SHELL": "/bin/bash",
+            "SHLVL": "1",
+            "SSH_CLIENT": "172.17.0.2 56958 22",
+            "SSH_CONNECTION": "172.17.0.2 56958 172.17.0.3 22",
+            "SSH_TTY": "/dev/pts/1",
+            "TERM": "xterm",
+            "USER": "root",
+            "_": "/bin/sh"
+        },
+        "ansible_eth0": {
+            "active": true,
+            "device": "eth0",
+            "features": {},
+            "ipv4": {
+                "address": "172.17.0.3",
+                "broadcast": "global",
+                "netmask": "255.255.0.0",
+                "network": "172.17.0.0"
+            },
+            "macaddress": "02:42:ac:11:00:03",
+            "mtu": 1500,
+            "promisc": false,
+            "speed": 10000,
+            "type": "ether"
+        },
+        "ansible_fips": false,
+        "ansible_form_factor": "Other",
+        "ansible_fqdn": "47bcd30760e2",
+        "ansible_gather_subset": [
+            "hardware",
+            "network",
+            "virtual"
+        ],
+        "ansible_hostname": "47bcd30760e2",
+        "ansible_interfaces": [
+            "lo",
+            "eth0"
+        ],
+        "ansible_kernel": "3.10.0-514.10.2.el7.x86_64",
+        "ansible_lo": {
+            "active": true,
+            "device": "lo",
+            "features": {},
+            "ipv4": {
+                "address": "127.0.0.1",
+                "broadcast": "host",
+                "netmask": "255.0.0.0",
+                "network": "127.0.0.0"
+            },
+            "mtu": 65536,
+            "promisc": false,
+            "type": "loopback"
+        },
+        "ansible_lsb": {
+            "codename": "trusty",
+            "description": "Ubuntu 14.04.5 LTS",
+            "id": "Ubuntu",
+            "major_release": "14",
+            "release": "14.04"
+        },
+        "ansible_machine": "x86_64",
+        "ansible_memfree_mb": 32,
+        "ansible_memory_mb": {
+            "nocache": {
+                "free": 220,
+                "used": 268
+            },
+            "real": {
+                "free": 32,
+                "total": 488,
+                "used": 456
+            },
+            "swap": {
+                "cached": 2,
+                "free": 1498,
+                "total": 1535,
+                "used": 37
+            }
+        },
+        "ansible_memtotal_mb": 488,
+        "ansible_mounts": [
+            {
+                "device": "/dev/mapper/VolGroup00-LogVol00",
+                "fstype": "xfs",
+                "mount": "/etc/resolv.conf",
+                "options": "rw,seclabel,relatime,attr2,inode64,noquota,bind",
+                "size_available": 36874506240,
+                "size_total": 40212119552,
+                "uuid": "N/A"
+            },
+            {
+                "device": "/dev/mapper/VolGroup00-LogVol00",
+                "fstype": "xfs",
+                "mount": "/etc/hostname",
+                "options": "rw,seclabel,relatime,attr2,inode64,noquota,bind",
+                "size_available": 36874506240,
+                "size_total": 40212119552,
+                "uuid": "N/A"
+            },
+            {
+                "device": "/dev/mapper/VolGroup00-LogVol00",
+                "fstype": "xfs",
+                "mount": "/etc/hosts",
+                "options": "rw,seclabel,relatime,attr2,inode64,noquota,bind",
+                "size_available": 36874506240,
+                "size_total": 40212119552,
+                "uuid": "N/A"
+            }
+        ],
+        "ansible_nodename": "47bcd30760e2",
+        "ansible_os_family": "Debian",
+        "ansible_pkg_mgr": "apt",
+        "ansible_processor": [
+            "GenuineIntel",
+            "Intel(R) Core(TM) i5-5287U CPU @ 2.90GHz"
+        ],
+        "ansible_processor_cores": 1,
+        "ansible_processor_count": 1,
+        "ansible_processor_threads_per_core": 1,
+        "ansible_processor_vcpus": 1,
+        "ansible_product_name": "VirtualBox",
+        "ansible_product_serial": "0",
+        "ansible_product_uuid": "67FE42B1-3167-4F48-B89A-DC2B3627D854",
+        "ansible_product_version": "1.2",
+        "ansible_python": {
+            "executable": "/usr/bin/python",
+            "has_sslcontext": false,
+            "type": "CPython",
+            "version": {
+                "major": 2,
+                "micro": 6,
+                "minor": 7,
+                "releaselevel": "final",
+                "serial": 0
+            },
+            "version_info": [
+                2,
+                7,
+                6,
+                "final",
+                0
+            ]
+        },
+        "ansible_python_version": "2.7.6",
+        "ansible_real_group_id": 0,
+        "ansible_real_user_id": 0,
+        "ansible_selinux": false,
+        "ansible_service_mgr": "upstart",
+        "ansible_ssh_host_key_dsa_public": "AAAAB3NzaC1kc3MAAACBAL79cXHJanRSjNKsol5l6yq9PZ1EUjK5wL45M91dfZTuwimg2uZ6+GQ9brUODxAF8jNCNGVlObWTpD/I/trOavbwMdQxHFV5Wgkz14nRaf4NbBrQFH1XZQ88pwIke4AjS5VDwVQNgt4n+C3EzWsM0TZFMOpnYGv1htGiqf5BcoWfAAAAFQCycwjZuaaCWAIsmX2ZhrmLFaYa5QAAAIEAsR3I28y1hjmNFQ1ngVn+NsuGxkP+2OhPuQ1hRgkye+M5pY4AB8rrKUPdiIZzjh8h7aj0z8BIkJ4H95hsZmOmRr/I4dbC7p4JyjqRvXz6JsHKeAh4m4Np0BxcWD1uznbLrQJmdGnna1jHpBiHDAOkuOK6BBa655MYq/96poNHb38AAACBALoXqlLH9psbj+b9CE83Eg4GlbiQ5Ee9xyG8gmPIpSQe85lb0scAOrv1a7w2aj6qvghoQOOCOMmt0/OmoYNq/ksGIb5XbRlvAItQyWv8lv1/Y7jR5yP+aliUgprDJJceTYEcWYCRra9qEv8O2/qA+XzSH4cXReNKxOmyl3mk3BeL",
+        "ansible_ssh_host_key_ecdsa_public": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJmP5qEhIJlL8ML8DWeq6vF1LLrq8C42b0Nslu9WC56c5H1e9TU1CzGSmrchVceYyT2HW8/XsTjz5SHGyNZWhz8=",
+        "ansible_ssh_host_key_ed25519_public": "AAAAC3NzaC1lZDI1NTE5AAAAIODdRxqOihKqnUR5jfblLnTk0+etUtReRr9D75w1GZn2",
+        "ansible_ssh_host_key_rsa_public": "AAAAB3NzaC1yc2EAAAADAQABAAABAQDDgSWmPaXdOgco4h961Mm2jRCNQw3nXS0q0j9B2wVscTjaf6R6opeamx7f/Czjc0uq7snsyhDl9k71xRHPLmdVLvnoe5x+ZU7BJVUkaS07a26BtcEElvK/i6ofuXxltOnCjQ3unhItxCgywaP08I4k5S/J+8gKLFMA6wWxUUEM0l0trvPW07t4JuisoQ9Lfnddcf69sHj/EFf4rMg5GezkWWzpvViOD0gyCMwK5mF5sUyDy6AFAXe6sonn4AcU2a+frBvsY2q655u73VIiC/7E5dAB7Y+iD8aVEOmdCFcTlWajFsNWYs07Ypj7ryzaHKCZhXBJYima1aYZtAwvPRSt",
+        "ansible_swapfree_mb": 1498,
+        "ansible_swaptotal_mb": 1535,
+        "ansible_system": "Linux",
+        "ansible_system_capabilities": [
+            "cap_chown",
+            "cap_dac_override",
+            "cap_fowner",
+            "cap_fsetid",
+            "cap_kill",
+            "cap_setgid",
+            "cap_setuid",
+            "cap_setpcap",
+            "cap_net_bind_service",
+            "cap_net_raw",
+            "cap_sys_chroot",
+            "cap_mknod",
+            "cap_audit_write",
+            "cap_setfcap+ep"
+        ],
+        "ansible_system_capabilities_enforced": "True",
+        "ansible_system_vendor": "innotek GmbH",
+        "ansible_uptime_seconds": 73045,
+        "ansible_user_dir": "/root",
+        "ansible_user_gecos": "root",
+        "ansible_user_gid": 0,
+        "ansible_user_id": "root",
+        "ansible_user_shell": "/bin/bash",
+        "ansible_user_uid": 0,
+        "ansible_userspace_architecture": "x86_64",
+        "ansible_userspace_bits": "64",
+        "ansible_virtualization_role": "guest",
+        "ansible_virtualization_type": "docker",
+        "module_setup": true
+    },
+    "changed": false
+}
+root@b556839ea9cf:/#
+```
+经常使用的命令：
+1. 查看主机内存信息
+```shell?linenums
+root@b556839ea9cf:/# ansible 172.17.0.3 -m setup -a 'filter=ansible_*_mb' -k
+SSH password:
+172.17.0.3 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_memfree_mb": 31,
+        "ansible_memory_mb": {
+            "nocache": {
+                "free": 219,
+                "used": 269
+            },
+            "real": {
+                "free": 31,
+                "total": 488,
+                "used": 457
+            },
+            "swap": {
+                "cached": 2,
+                "free": 1498,
+                "total": 1535,
+                "used": 37
+            }
+        },
+        "ansible_memtotal_mb": 488,
+        "ansible_swapfree_mb": 1498,
+        "ansible_swaptotal_mb": 1535
+    },
+    "changed": false
+}
+root@b556839ea9cf:/# ansible 172.17.0.3 -a 'free -m'
+172.17.0.3 | SUCCESS | rc=0 >>
+             total       used       free     shared    buffers     cached
+Mem:           488        447         41          7          0        188
+-/+ buffers/cache:        259        229
+Swap:         1535         37       1498
+
+root@b556839ea9cf:/#
+```
+2. 查看接口为eth0-2的网卡信息
+
+
+3. 
+```shell?linenums
+ansible 10.212.52.252 -m setup -a 'filter=ansible_*_mb'   #
+    ansible 10.212.52.252 -m setup -a 'filter=ansible_eth[0-2]'   //
     ansible all -m setup --tree /tmp/facts   //将所有主机的信息输入到/tmp/facts目录下，每台主机的信息输入到主机名文件中（/etc/ansible/hosts里的主机名）
 三、file模块
 file模块主要用于远程主机上的文件操作，file模块包含如下选项： 
