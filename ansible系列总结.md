@@ -443,7 +443,6 @@ ansible <pattern_goes_here> -m <module_name> -a <arguments>
 ```shell?linenums
 ansible webservers -m service -a "name=httpd state=restarted"
 ```
-
 这里是对webservers 组或主机重启httpd服务 ，其中webservers 就是Pattern部分。而之所以上面说Pattern（模式）可以理解为正则，主要针对下面经常用到的用法而言的。
 1、表示所有的主机可以使用all 或 * 
 2、通配符与逻辑或
