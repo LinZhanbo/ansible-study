@@ -338,7 +338,7 @@ Ansible 通过读取默认的主机清单配置`/etc/ansible/hosts`，可以同�
 ## Hosts and Groups（主机与组）
 
 对于/etc/ansible/hosts最简单的定义格式像下面：
-1、简单的主机和组
+### 1 简单的主机和组
 ```ini?linenums
 mail.yanruogu.com
 [webservers]
@@ -350,6 +350,17 @@ db2.yanruogu.com
 ```
 a、中括号中的名字代表组名，可以根据自己的需求将庞大的主机分成具有标识的组，如上面分了两个组webservers和dbservers组；
 b、主机(hosts)部分可以使用域名、主机名、IP地址表示；当然使用前两者时，也需要主机能反解析到相应的IP地址，一般此类配置中多使用IP地址；
+### 2 端口与别名
+如果某些主机的SSH运行在自定义的端口上，ansible使用Paramiko进行ssh连接时，不会使用你SSH配置文件中列出的端口，但是如果修改ansible使用openssh进行ssh连接时将会使用：
+```shell?linenums
+192.168.1.1:3091
+```
+假如你想要为某些静态IP设置一些别名，可以这样做：
+```shell?linenums
+web1 ansible_ssh_port = 3333 ansible_ssh_host = 192.168.1.2
+```
+上面的 web1别名就指代了IP为192.168.1.2，ssh连接端口为3333的主机。
+
 
 
 
