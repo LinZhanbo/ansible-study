@@ -409,21 +409,23 @@ proxy=192.168.1.20
 上面test组中包含两台主机，通过对test组指定==vars==变更，相应的host1和host2相当于相应的指定了ntp_server和proxy变量参数值 。
 
 ### 6 组的包含与组内变量
-    [wuhan]
-    web1
-    web2
-    [suizhou]
-    web4
-    web3
-    [hubei:children]
-    wuhan
-    suizhou
-    [hubei:vars]
-    ntp_server=192.168.1.10
-    zabbix_server=192.168.1.10
-    [china:children]
-    hubei
-    hunan
+```ini?linenums
+[wuhan]
+web1
+web2
+[suizhou]
+web4
+web3
+[hubei:children]
+wuhan
+suizhou
+[hubei:vars]
+ntp_server=192.168.1.10
+zabbix_server=192.168.1.10
+[china:children]
+hubei
+hunan
+```
 上面的示例中，指定了武汉组有web1、web2；随州组有web3、web4主机；又指定了一个湖北组，同时包含武汉和随州；同时为该组内的所有主机指定了2个vars变量。设定了一个组中国组，包含湖北、湖南。
 注：vars变量在ansible ad-hoc部分中基本用不到，主要用在ansible-playbook中。
 
