@@ -431,8 +431,13 @@ hunan
 注：vars变量在ansible ad-hoc部分中基本用不到，主要用在ansible-playbook中。
 
 ## Patterns（主机与组正则匹配部分）
-把Patterns 直接理解为正则实际是不完全准确的，正常的理解为patterns意味着在ansible中管理哪些主机，也可以理解为，要与哪台主机进行通信。在探讨这个问题之前我们先看下ansible的用法：
+
+把Patterns 直接理解为正则实际是不完全准确的，可理解成要与哪些主机进行通信。
+
+在探讨这个问题之前我们先看下ansible的用法：
+```shell?linenums
 ansible <pattern_goes_here> -m <module_name> -a <arguments>
+```
 直接上一个示例：
 ansible webservers -m service -a "name=httpd state=restarted"
 这里是对webservers 组或主机重启httpd服务 ，其中webservers 就是Pattern部分。而之所以上面说Pattern（模式）可以理解为正则，主要针对下面经常用到的用法而言的。
