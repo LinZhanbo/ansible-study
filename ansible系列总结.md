@@ -447,7 +447,7 @@ ansible webservers -m service -a "name=httpd state=restarted"
 之所以上面说Pattern（模式）可以理解为正则，主要针对下面经常用到的用法而言的。
 1. 表示所有的主机可以使用==all==或==*==； 
 2. 通配符与逻辑或。
-利用通配符还可以指定一组具有规则特征的主机或主机名，冒号表示or－－－逻辑或
+利用通配符还可以指定一组具有规则特征的主机或主机名，如`:`可以表示逻辑或。
     web1.yanruogu.com
     web1.yanruogu.com:web2.yanruogu.com
     192.168.1.1
