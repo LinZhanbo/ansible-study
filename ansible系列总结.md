@@ -454,10 +454,12 @@ web1.yanruogu.com:web2.yanruogu.com
 192.168.1.1
 192.168.1.*
 ```
-当然，这里的*通配符也可以用在前面，如：
-    *.yanruogu.com
+当然，这里的`*`通配符也可以用在前面，如：
+```ini?linenums
+*.yanruogu.com
     *.com    
     webservers1[0]     #表示匹配 webservers1 组的第 1 个主机    webservers1[0:25]  #表示匹配 webservers1 组的第 1 个到第 25 个主机（官网文档是":"表示范围，测试发现应该使用"-",注意不要和匹配多个主机组混淆）
+```
 上面的用法，在多个组之间同样适用 ，如：
     webservers
     webservers:dbservers  #表示两个组中所有的主机
