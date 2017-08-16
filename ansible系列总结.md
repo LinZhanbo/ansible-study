@@ -444,50 +444,64 @@ ansible <pattern_goes_here> -m <module_name> -a <arguments>
 ansible webservers -m service -a "name=httpd state=restarted"
 ```
 这里是对webservers 组或主机重启httpd服务 ，其中`webservers`就是Pattern部分。
-之所以上面说Pattern（模式）可以理解为正则，主要针对下面经常用到的用法而言的。
+之所以上面说Pattern（模式）可以理解为正则，主要针对下面经常用到的用法而言的：
 ### 1 表示所有的主机可以使用`all`或`*`； 
-### 2 逻辑或、逻辑与
+### 2 逻辑或 和 任意
 利用通配符还可以指定一组具有规则特征的主机或主机名。
 `:`表示逻辑或；
 `*`代表任意。
 
 ```ini?linenums
-web1.yanruogu.com
-web1.yanruogu.com:web2.yanruogu.com
+web0.yanruogu.com
+web1.yanruogu.com:web2.yanruogu.com	#表示两个组中所有机器
 192.168.1.1
-192.168.1.*
+192.168.1.*     # 表示192.168.1.x所有机器
 ```
+
 当然，这里的`*`通配符也可以用在前面，如：
 ```ini?linenums
 *.yanruogu.com
 *.com    
 webservers1[0]     #表示匹配 webservers1 组的第 1 个主机    webservers1[0:25]  #表示匹配 webservers1 组的第 1 个到第 25 个主机
 ```
-上面的用法，在多个组之间同样适用 ，如：
+
+### 3 逻辑非 和 逻辑与
+非的表达式。如，目标主机必须在组webservers但不在phoenix组中
 ```ini?linenums
-webservers
-webservers:dbservers  #表示两个组中所有的主机
+webserver:!phoenix
+```
+交集的表达式。如，目标主机必须即在组webservers中又在组staging中
+```ini?linenums
+webservers:&staging
+```
+一个更复杂的示例：
+```ini?linenums
+webserver:dbservers:&staging:!phoenix
+```
+上面这个复杂的表达式最后表示的目标主机必须满足：在webservers或者dbservers组中，必须还存在于staging组中，但是不在phoenix组中。
+
+### 4 混合使用
+```ini?linenums
+*.yanruogu.com:*.org
+```
+还可以在开头的地方使用`”~”`，用来表示这是一个正则表达式:
+```ini?linenums
+~(web|db).*\.yanruogu\.com
 ```
 
-3、逻辑非与逻辑and
-非的表达式，如，目标主机必须在组webservers但不在phoenix组中
-    webserver:!phoenix
-交集的表达式，如，目标主机必须即在组webservers中又在组staging中
-    webservers:&staging
-一个更复杂的示例：
-    webserver:dbservers:&staging:!phoenix
-上面这个复杂的表达式最后表示的目标主机必须满足：在webservers或者dbservers组中，必须还存在于staging组中，但是不在phoenix组中 。
-4、混合高级用法
-    *.yanruogu.com:*.org
-还可以在开头的地方使用”~”，用来表示这是一个正则表达式:
-    ~(web|db).*\.yanruogu\.com
-给两个ansible-playbook中具体可能用的用法：
-a、在ansible-palybook命令中，你也可以使用变量来组成这样的表达式，但是你必须使用“-e”的选项来指定这个表达式（通常我们不这样用）：
-    ansible-palybook -e webservers:!{{excluded}}:&{{required}}
-b、在ansible和ansible-playbook中，还可以通过一个参数”--limit”来明确指定排除某些主机或组：
-    ansible-playbook site.yml --limit datacenter2
-c、从Ansible1.2开始，如果想排除一个文件中的主机可以使用"@"：
-    ansible-playbook site.yml --limit @retry_hosts.txt
+ansible-playbook中经常使用Pattern的用法：
+- 在ansible-playbook命令中，你可以使用变量来组成这样的表达式，但是你必须使用“-e”的选项来指定这个表达式：
+```ini?linenums
+ansible-playbook -e webservers:!{{excluded}}:&{{required}}
+```
+- 在ansible和ansible-playbook中，还可以通过一个参数”--limit”来明确指定排除某些主机或组：
+```ini?linenums
+ansible-playbook site.yml --limit datacenter2
+```
+- 从Ansible1.2开始，如果想排除一个文件中的主机可以使用"@"：
+```ini?linenums
+ansible-playbook site.yml --limit @retry_hosts.txt
+```
 	
 
 
