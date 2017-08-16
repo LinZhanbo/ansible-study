@@ -541,6 +541,7 @@ accelerate_connect_timeout = 5.0
 # from the last activity to the accelerate daemon.
 accelerate_daemon_timeout = 30
 ```
+经常用到的修改配置一：
 如果在对之前未连接的主机进行连结时报错如下：
 ```shell?linenums
 ansible test -a 'uptime'
@@ -549,7 +550,8 @@ ansible test -a 'uptime'
 ```
 是由于在本机的~/.ssh/known_hosts文件中没有fingerprint key串，ssh第一次连接的时候一般会提示输入yes 进行确认，将key字符串加入到  ~/.ssh/known_hosts 文件中。
 该错误解决办法有：
-- 在进行ssh连接时，可以使用`-o`参数将`StrictHostKeyChecking`设置为no，使用ssh连接时避免首次连接时让输入yes/no部分的提示。通过查看ansible.cfg配置文件，发现如下行：
+方法一：
+在进行ssh连接时，可以使用`-o`参数将`StrictHostKeyChecking`设置为no，使用ssh连接时避免首次连接时让输入yes/no部分的提示。通过查看ansible.cfg配置文件，发现如下行：
 ```ini?linenums
 [ssh_connection]
 # ssh arguments to use
@@ -562,7 +564,20 @@ ansible test -a 'uptime'
 ssh_args = -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking＝no
 ```
 
+方法二：
+在ansible.cfg配置文件中，也会找到如下配置：
+```ini?linenums
+# uncomment this to disable SSH key host checking
+host_key_checking = False  
+```
+默认host_key_checking部分是注释的，通过该行，同样也可以实现跳过ssh 首次连接提示验证部分。但在实际测试中，似乎并没有效果，建议使用方法1。
 
+经常用到的修改配置二：
+默认ansible 执行的时候，并不会输出日志到文件，不过在ansible.cfg 配置文件中有如下行：
+```ini?linenums
+log_path = /var/log/ansible.log
+```
+默认log_path这行是注释的，打开该行的注释，所有的命令执行后，都会将日志输出到/var/log/ansible.log文件。
 
 
 
