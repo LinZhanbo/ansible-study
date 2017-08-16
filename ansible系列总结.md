@@ -325,7 +325,8 @@ share
 src
 root@b556839ea9cf:/#
 ```
-![enter description here][4]
+![enter description aaa][4]
+
 效果是一样的。
 
 上面就是ansible的简单使用。
