@@ -333,6 +333,8 @@ root@b556839ea9cf:/#
 
 # 2. 主机清单INVENTORY
 
+Ansible 通过读取默认的主机清单配置/etc/ansible/hosts,可以同时连接到多个远程主机上执行任务, 默认路径可以通过修改 ansible.cfg 的 hostfile 参数指定路径。
+
 
 
 
