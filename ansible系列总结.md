@@ -461,8 +461,10 @@ web1.yanruogu.com:web2.yanruogu.com
     webservers1[0]     #表示匹配 webservers1 组的第 1 个主机    webservers1[0:25]  #表示匹配 webservers1 组的第 1 个到第 25 个主机（官网文档是":"表示范围，测试发现应该使用"-",注意不要和匹配多个主机组混淆）
 ```
 上面的用法，在多个组之间同样适用 ，如：
-    webservers
-    webservers:dbservers  #表示两个组中所有的主机
+```ini?linenums
+webservers
+webservers:dbservers  #表示两个组中所有的主机
+```
 3、逻辑非与逻辑and
 非的表达式，如，目标主机必须在组webservers但不在phoenix组中
     webserver:!phoenix
