@@ -445,9 +445,12 @@ ansible webservers -m service -a "name=httpd state=restarted"
 ```
 这里是对webservers 组或主机重启httpd服务 ，其中`webservers`就是Pattern部分。
 之所以上面说Pattern（模式）可以理解为正则，主要针对下面经常用到的用法而言的。
-1. 表示所有的主机可以使用==all==或==*==； 
-2. 通配符与逻辑或。
-利用通配符还可以指定一组具有规则特征的主机或主机名，如`:`可以表示逻辑或。
+### 1 表示所有的主机可以使用`all`或`*`； 
+### 2 逻辑或、逻辑与
+利用通配符还可以指定一组具有规则特征的主机或主机名。
+`:`表示逻辑或；
+`*`代表任意。
+
 ```ini?linenums
 web1.yanruogu.com
 web1.yanruogu.com:web2.yanruogu.com
@@ -457,14 +460,15 @@ web1.yanruogu.com:web2.yanruogu.com
 当然，这里的`*`通配符也可以用在前面，如：
 ```ini?linenums
 *.yanruogu.com
-    *.com    
-    webservers1[0]     #表示匹配 webservers1 组的第 1 个主机    webservers1[0:25]  #表示匹配 webservers1 组的第 1 个到第 25 个主机（官网文档是":"表示范围，测试发现应该使用"-",注意不要和匹配多个主机组混淆）
+*.com    
+webservers1[0]     #表示匹配 webservers1 组的第 1 个主机    webservers1[0:25]  #表示匹配 webservers1 组的第 1 个到第 25 个主机
 ```
 上面的用法，在多个组之间同样适用 ，如：
 ```ini?linenums
 webservers
 webservers:dbservers  #表示两个组中所有的主机
 ```
+
 3、逻辑非与逻辑and
 非的表达式，如，目标主机必须在组webservers但不在phoenix组中
     webserver:!phoenix
