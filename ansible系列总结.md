@@ -1060,9 +1060,202 @@ file模块主要用于远程主机上的文件操作，file模块包含如下选
 	- absent：删除目录、文件或者取消链接文件
 
 使用示例：
-    ansible test -m file -a "src=/etc/fstab dest=/tmp/fstab state=link"
-    ansible test -m file -a "path=/tmp/fstab state=absent"
-    ansible test -m file -a "path=/tmp/test state=touch"
+1. 创建软连接
+```shell?linenums
+root@b556839ea9cf:/# ansible test -a 'ls /tmp -l' -k
+SSH password:
+172.17.0.5 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:30 ansible_AzhL_S
+
+172.17.0.3 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:30 ansible_cSyUb9
+
+172.17.0.4 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:30 ansible_jh1XjP
+
+root@b556839ea9cf:/# ansible test -m file -a 'src=/etc/fstab dest=/tmp/fstab state=link' -k
+SSH password:
+172.17.0.3 | SUCCESS => {
+    "changed": true,
+    "dest": "/tmp/fstab",
+    "gid": 0,
+    "group": "root",
+    "mode": "0777",
+    "owner": "root",
+    "size": 10,
+    "src": "/etc/fstab",
+    "state": "link",
+    "uid": 0
+}
+172.17.0.4 | SUCCESS => {
+    "changed": true,
+    "dest": "/tmp/fstab",
+    "gid": 0,
+    "group": "root",
+    "mode": "0777",
+    "owner": "root",
+    "size": 10,
+    "src": "/etc/fstab",
+    "state": "link",
+    "uid": 0
+}
+172.17.0.5 | SUCCESS => {
+    "changed": true,
+    "dest": "/tmp/fstab",
+    "gid": 0,
+    "group": "root",
+    "mode": "0777",
+    "owner": "root",
+    "size": 10,
+    "src": "/etc/fstab",
+    "state": "link",
+    "uid": 0
+}
+root@b556839ea9cf:/# ansible test -a 'ls /tmp -l' -k
+SSH password:
+172.17.0.5 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:31 ansible_ogXnVb
+lrwxrwxrwx. 1 root root 10 Aug 14 23:31 fstab -> /etc/fstab
+
+172.17.0.4 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:31 ansible_5I0Iig
+lrwxrwxrwx. 1 root root 10 Aug 14 23:31 fstab -> /etc/fstab
+
+172.17.0.3 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:31 ansible_qkzMyT
+lrwxrwxrwx. 1 root root 10 Aug 14 23:31 fstab -> /etc/fstab
+
+root@b556839ea9cf:/#
+```
+2. 删除目录、文件或者取消链接文件
+```shell?linenums
+root@b556839ea9cf:/# ansible test -a 'ls /tmp -l' -k
+SSH password:
+172.17.0.5 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:31 ansible_ogXnVb
+lrwxrwxrwx. 1 root root 10 Aug 14 23:31 fstab -> /etc/fstab
+
+172.17.0.4 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:31 ansible_5I0Iig
+lrwxrwxrwx. 1 root root 10 Aug 14 23:31 fstab -> /etc/fstab
+
+172.17.0.3 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:31 ansible_qkzMyT
+lrwxrwxrwx. 1 root root 10 Aug 14 23:31 fstab -> /etc/fstab
+
+root@b556839ea9cf:/# ansible test -m file -a 'path=/tmp/fstab state=absent' -k
+SSH password:
+172.17.0.4 | SUCCESS => {
+    "changed": true,
+    "path": "/tmp/fstab",
+    "state": "absent"
+}
+172.17.0.5 | SUCCESS => {
+    "changed": true,
+    "path": "/tmp/fstab",
+    "state": "absent"
+}
+172.17.0.3 | SUCCESS => {
+    "changed": true,
+    "path": "/tmp/fstab",
+    "state": "absent"
+}
+root@b556839ea9cf:/# ansible test -a 'ls /tmp -l' -k
+SSH password:
+172.17.0.3 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:33 ansible_OZmkOw
+
+172.17.0.5 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:33 ansible_jKqDSw
+
+172.17.0.4 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:33 ansible_GZeyLc
+
+root@b556839ea9cf:/#
+```
+3. 如果文件不存在，则会创建一个新的文件，如果文件或目录已存在，则更新其最后修改时间
+```shell?linenums
+root@b556839ea9cf:/# ansible test -a 'ls /tmp -l' -k
+SSH password:
+172.17.0.3 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:33 ansible_OZmkOw
+
+172.17.0.5 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:33 ansible_jKqDSw
+
+172.17.0.4 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:33 ansible_GZeyLc
+
+root@b556839ea9cf:/# ansible test -m file -a 'path=/tmp/test state=touch' -k
+SSH password:
+172.17.0.5 | SUCCESS => {
+    "changed": true,
+    "dest": "/tmp/test",
+    "gid": 0,
+    "group": "root",
+    "mode": "0644",
+    "owner": "root",
+    "size": 0,
+    "state": "file",
+    "uid": 0
+}
+172.17.0.3 | SUCCESS => {
+    "changed": true,
+    "dest": "/tmp/test",
+    "gid": 0,
+    "group": "root",
+    "mode": "0644",
+    "owner": "root",
+    "size": 0,
+    "state": "file",
+    "uid": 0
+}
+172.17.0.4 | SUCCESS => {
+    "changed": true,
+    "dest": "/tmp/test",
+    "gid": 0,
+    "group": "root",
+    "mode": "0644",
+    "owner": "root",
+    "size": 0,
+    "state": "file",
+    "uid": 0
+}
+root@b556839ea9cf:/# ansible test -a 'ls /tmp -l' -k
+SSH password:
+172.17.0.3 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:35 ansible_d61JVB
+-rw-r--r--. 1 root root  0 Aug 14 23:35 test
+
+172.17.0.5 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:35 ansible_BCK6pw
+-rw-r--r--. 1 root root  0 Aug 14 23:35 test
+
+172.17.0.4 | SUCCESS | rc=0 >>
+total 0
+drwx------. 2 root root 65 Aug 14 23:35 ansible_QorH2V
+-rw-r--r--. 1 root root  0 Aug 14 23:35 test
+
+root@b556839ea9cf:/#
+```
+
 四、copy模块
 复制文件到远程主机，copy模块包含如下选项：
 backup：在覆盖之前将原文件备份，备份文件包含时间信息。有两个选项：yes|no 
