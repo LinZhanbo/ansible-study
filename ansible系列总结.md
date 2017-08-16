@@ -547,7 +547,23 @@ ansible test -a 'uptime'
 192.168.1.1| FAILED =>Using a SSH password instead of a key is not possible because HostKey checking is enabled and sshpass does not support this.Please add this host's fingerprint to your known_hosts file to manage this host.
 192.168.1.2 | FAILED => Using a SSH password instead of a key is not possible because Host Key checking is enabled and sshpass does not support this.  Please add this host's fingerprint to your known_hosts file to manage this host.
 ```
-是由于在本机的~/.ssh/known_hosts文件中没有fingerprint key串，ssh第一次连接的时候一般会提示输入yes 进行确认为将key字符串加入到  ~/.ssh/known_hosts 文件中。
+是由于在本机的~/.ssh/known_hosts文件中没有fingerprint key串，ssh第一次连接的时候一般会提示输入yes 进行确认，将key字符串加入到  ~/.ssh/known_hosts 文件中。
+该错误解决办法有：
+- 在进行ssh连接时，可以使用`-o`参数将`StrictHostKeyChecking`设置为no，使用ssh连接时避免首次连接时让输入yes/no部分的提示。通过查看ansible.cfg配置文件，发现如下行：
+```ini?linenums
+[ssh_connection]
+# ssh arguments to use
+# Leaving off ControlPersist will result in poor performance, so use
+# paramiko on older platforms rather than removing it
+#ssh_args = -o ControlMaster=auto -o ControlPersist=60s
+```
+可以启用ssh_args 部分，使用下面的配置，避免上面出现的错误：
+```ini?linenums
+ssh_args = -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking＝no
+```
+
+
+
 
 
 
