@@ -622,6 +622,7 @@ ansible all -B 1800 -P 60 -a "/usr/bin/long_running_operation --do-stuff" #后�
 
 
 
+
 注：raw模块和comand、shell 模块不同的是其没有chdir、creates、removes参数，chdir参数的作用就是先切到chdir指定的目录后，再执行后面的命令，这在后面很多模块里都会有该参数 。
 command模块包含如下选项： 
 creates：一个文件名，当该文件存在，则该命令不执行 
