@@ -586,7 +586,7 @@ log_path = /var/log/ansible.log
 查看某个模块的参数可以使用`ansible-doc -s module`；
 查看该模块更详细的信息可以使用`ansible-doc help module`。
 
-## Ad-hoc 
+## Ad-hoc使用办法
 ### 1 命令说明
 一个ad-hoc命令的执行，需要按以下格式进行执行：
 ```shell?linenums
@@ -605,7 +605,7 @@ ansible all -m async_status -a "jid=123456789"  #检查任务的状态
 ansible all -B 1800 -P 60 -a "/usr/bin/long_running_operation --do-stuff" #后台执行命令最大时间是1800s即30分钟，-P 每60s检查下状态，默认15s
 ```
 
-二、命令执行模块
+## 命令执行模块
 命令执行模块包含如下 四个模块：
 command模块：该模块通过-a跟上要执行的命令可以直接执行，不过命令里如果有带有如下字符部分则执行不成功 “  "<", ">", "|",  "&" ；
 shell 模块：用法基本和command一样，不过其是通过/bin/sh进行执行，所以shell 模块可以执行任何命令，就像在本机执行一样；
