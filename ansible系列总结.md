@@ -541,7 +541,13 @@ accelerate_connect_timeout = 5.0
 # from the last activity to the accelerate daemon.
 accelerate_daemon_timeout = 30
 ```
-
+如果在对之前未连接的主机进行连结时报错如下：
+```shell?linenums
+ansible test -a 'uptime'
+192.168.1.1| FAILED =>Using a SSH password instead of a key is not possible because HostKey checking is enabled and sshpass does not support this.Please add this host's fingerprint to your known_hosts file to manage this host.
+192.168.1.2 | FAILED => Using a SSH password instead of a key is not possible because Host Key checking is enabled and sshpass does not support this.  Please add this host's fingerprint to your known_hosts file to manage this host.
+```
+是由于在本机的~/.ssh/known_hosts文件中并有fingerprint key串，ssh第一次连接的时候一般会提示输入yes 进行确认为将key字符串加入到  ~/.ssh/known_hosts 文件中。
 
 
 
