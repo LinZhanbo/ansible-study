@@ -29,5 +29,20 @@ Ansible更新，也更轻，ansible本身只是个工具，它使用ssh互信直
 - 不输于puppet和saltstack的其他功能；
 - 默认使用ssh控制各节点。
 
+3. Ansible基本架构
+![enter description here][1]
+
+- 连接插件（Connectior Plugins）：ansible基于连接插件连接到各个主机上，虽然ansible是使用ssh连接到各个主机的，但是它还支持其他的连接方法，所以需要有连接插件；比如使用SaltStack的ZeroMQ协议；
+- 核心模块（Core Modules）：Ansible是模块化的，比如你连接上具体主机后，你要做操作，比如要在远程主机创建文件，你需要file模块；你要copy一个文件到远程主机，你需要copy模块；你要检查远程主机是否存活，你需要ping模块；Ansible需要具体的模块去做具体事情；
+- 扩展模块（Custom Modules）：当Ansible自带模块完成不了时候，我们可以对模块进行扩展，自定义模块；
+- 插件（Plugins）：完成模块功能的补充；
+- 剧本（Playbooks）：ansible的任务配置文件，将多个任务定义在剧本中，由ansible自动执行
+- 主机群（Host Inventory）：定义ansible管理的主机，我们要管理哪些主机呢，就需要这样的文件来告诉Ansible。
 
 
+
+
+
+
+
+  [1]: ./images/1502850110093.jpg
