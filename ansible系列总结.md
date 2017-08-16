@@ -579,7 +579,7 @@ log_path = /var/log/ansible.log
 ```
 默认log_path这行是注释的，打开该行的注释，所有的命令执行后，都会将日志输出到/var/log/ansible.log文件。
 
-
+# 4. Ad-hoc与命令执行模块
 
 
   [1]: ./images/1502850110093.jpg
