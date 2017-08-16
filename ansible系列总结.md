@@ -339,7 +339,7 @@ Ansible 通过读取默认的主机清单配置`/etc/ansible/hosts`，可以同�
 
 对于/etc/ansible/hosts最简单的定义格式像下面：
 1、简单的主机和组
-```shell?linenums
+```ini?linenums
 mail.yanruogu.com
 [webservers]
 web1.yanruogu.com
