@@ -489,6 +489,7 @@ webserver:dbservers:&staging:!phoenix
 ~(web|db).*\.yanruogu\.com
 ```
 
+
 ansible-playbook中经常使用Pattern的用法：
 - 在ansible-playbook命令中，你可以使用变量来组成这样的表达式，但是你必须使用“-e”的选项来指定这个表达式：
 ```ini?linenums
