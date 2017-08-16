@@ -611,6 +611,17 @@ ansible all -B 1800 -P 60 -a "/usr/bin/long_running_operation --do-stuff" #后�
 - shell 模块：用法基本和command一样，不过其是通过/bin/sh进行执行，所以shell 模块可以执行任何命令，就像在本机执行一样；
 - raw模块：用法和shell 模块一样 ，其也可以执行任意命令，就像在本机执行一样；
 - script模块：其是将管理端的shell在被管理主机上执行，其原理是先将shell复制到远程主机，再在远程主机上执行，原理类似于raw模块。
+
+
+
+
+
+
+
+
+
+
+
 注：raw模块和comand、shell 模块不同的是其没有chdir、creates、removes参数，chdir参数的作用就是先切到chdir指定的目录后，再执行后面的命令，这在后面很多模块里都会有该参数 。
 command模块包含如下选项： 
 creates：一个文件名，当该文件存在，则该命令不执行 
