@@ -335,6 +335,21 @@ root@b556839ea9cf:/#
 
 Ansible 通过读取默认的主机清单配置`/etc/ansible/hosts`，可以同时连接到多个远程主机上执行任务,，默认路径可以通过修改`ansible.cfg`的`hostfile`参数指定路径。
 
+## Hosts and Groups（主机与组）
+
+对于/etc/ansible/hosts最简单的定义格式像下面：
+1、简单的主机和组
+```shell?linenums
+mail.yanruogu.com
+[webservers]
+web1.yanruogu.com
+web2.yanruogu.com 
+[dbservers]
+db1.yanruogu.com
+db2.yanruogu.com
+```
+a、中括号中的名字代表组名，可以根据自己的需求将庞大的主机分成具有标识的组，如上面分了两个组webservers和dbservers组；
+b、主机(hosts)部分可以使用域名、主机名、IP地址表示；当然使用前两者时，也需要主机能反解析到相应的IP地址，一般此类配置中多使用IP地址；
 
 
 
