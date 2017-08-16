@@ -504,7 +504,9 @@ ansible-playbook site.yml --limit @retry_hosts.txt
 ```
 # 3. ansible.cfg配置说明
 
-	
+Ansible默认安装好后有一个配置文件/etc/ansible/ansible.cfg，该配置文件中定义了ansible的主机的默认配置部分，如默认是否需要输入密码、是否开启sudo认证、action_plugins插件的位置、hosts主机组的位置、是否开启log功能、默认端口、key文件位置等等。
+
+
 
 
 
