@@ -438,6 +438,7 @@ hunan
 ```shell?linenums
 ansible <pattern_goes_here> -m <module_name> -a <arguments>
 ```
+
 直接上一个示例：
 ansible webservers -m service -a "name=httpd state=restarted"
 这里是对webservers 组或主机重启httpd服务 ，其中webservers 就是Pattern部分。而之所以上面说Pattern（模式）可以理解为正则，主要针对下面经常用到的用法而言的。
