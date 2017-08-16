@@ -396,6 +396,7 @@ ansible_*_interpreter     #其他解释器路径，用法与ansible_python_inter
 
 上面的示例中指定了三台主机，三台主机的用密码分别是P@ssw0rd、123456、45789，指定的ssh连接的用户名分别为root、breeze、bernie，ssh 端口分别为22、22、3055 ，这样在ansible命令执行的时候就不用再指令用户和密码等了。
 
+
   [1]: ./images/1502850110093.jpg
   [2]: ./images/1502850202035.jpg
   [3]: ./images/1502850593608.jpg
