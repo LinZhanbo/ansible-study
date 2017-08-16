@@ -39,10 +39,13 @@ Ansible更新，也更轻，ansible本身只是个工具，它使用ssh互信直
 - 剧本（Playbooks）：ansible的任务配置文件，将多个任务定义在剧本中，由ansible自动执行
 - 主机群（Host Inventory）：定义ansible管理的主机，我们要管理哪些主机呢，就需要这样的文件来告诉Ansible。
 
-
-
-
-
+## Ansible工作原理
+![enter description here][2]
+local、SSH、ZeroMq是连接插件，我们经常使用的ssh互信方式；
+具体执行什么，依赖于modules的；
+然后将使用到的命令都定义到playbooks中；
+然后通过hosts主机清单定义好的主机来应用playbooks。
 
 
   [1]: ./images/1502850110093.jpg
+  [2]: ./images/1502850202035.jpg
