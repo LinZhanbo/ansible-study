@@ -612,7 +612,7 @@ ansible all -B 1800 -P 60 -a "/usr/bin/long_running_operation --do-stuff" #后�
 - raw模块：用法和shell 模块一样 ，其也可以执行任意命令，就像在本机执行一样；
 - script模块：其是将管理端的shell在被管理主机上执行，其原理是先将shell复制到远程主机，再在远程主机上执行，原理类似于raw模块。
 
-
+# 5 常用模块
 
 
 
