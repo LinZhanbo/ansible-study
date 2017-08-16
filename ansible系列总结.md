@@ -582,6 +582,9 @@ log_path = /var/log/ansible.log
 # 4. Ad-hoc与命令执行模块
 
 
+
+
+
   [1]: ./images/1502850110093.jpg
   [2]: ./images/1502850202035.jpg
   [3]: ./images/1502850593608.jpg
