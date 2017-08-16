@@ -46,6 +46,11 @@ local、SSH、ZeroMq是连接插件，我们经常使用的ssh互信方式；
 然后将使用到的命令都定义到playbooks中；
 然后通过hosts主机清单定义好的主机来应用playbooks。
 
+Ansible 在管理节点将 Ansible 模块通过 SSH 协议（或者 Kerberos、LDAP）推送到被管理端执行，执行完之后自动删除，可以使用 SVN 等来管理自定义模块及编排。
+
+
+
+
 
   [1]: ./images/1502850110093.jpg
   [2]: ./images/1502850202035.jpg
