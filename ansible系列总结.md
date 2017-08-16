@@ -427,6 +427,7 @@ hubei
 hunan
 ```
 上面的示例中，指定了武汉组有web1、web2；随州组有web3、web4主机；又指定了一个湖北组，同时包含武汉和随州；同时为该组内的所有主机指定了2个vars变量。设定了一个组中国组，包含湖北、湖南。
+
 注：vars变量在ansible ad-hoc部分中基本用不到，主要用在ansible-playbook中。
 
 
