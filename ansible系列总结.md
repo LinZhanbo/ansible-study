@@ -600,9 +600,9 @@ ansible 主机或组 -m 模块名 -a '模块参数'  ansible参数
 ### 2 后台执行
 当命令执行时间比较长时，也可以放到后台执行，使用`-B`、`-P`参数，如下：
 ```shell?linenums
-ansible all -B 3600-a "/usr/bin/long_running_operation --do-stuff" #后台执行命令3600s，-B 表示后台执行的时间
+ansible all -B 3600 -a "/usr/bin/long_running_operation --do-stuff" #后台执行命令3600s，-B 表示后台执行的时间
 ansible all -m async_status -a "jid=123456789"  #检查任务的状态
-ansible all -B 1800-P 60-a "/usr/bin/long_running_operation --do-stuff" #后台执行命令最大时间是1800s即30分钟，-P 每60s检查下状态，默认15s
+ansible all -B 1800 -P 60 -a "/usr/bin/long_running_operation --do-stuff" #后台执行命令最大时间是1800s即30分钟，-P 每60s检查下状态，默认15s
 ```
 
 二、命令执行模块
