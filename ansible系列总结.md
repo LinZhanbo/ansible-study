@@ -330,6 +330,8 @@ root@b556839ea9cf:/#
 
 上面就是ansible的简单使用。
 
+# 2. 主机清单INVENTORY
+
 
 
 
