@@ -581,7 +581,60 @@ log_path = /var/log/ansible.log
 
 # 4. Ad-hoc与命令执行模块
 
-Ad-Hoc 是指ansible下临时执行的一条命令，并且不需要保存的命令，对于复杂的命令会使用playbook。Ad-hoc的执行依赖于模块，ansible官方提供了大量的模块。 如：command、raw、shell、file、cron等，具体可以通过ansible-doc -l 进行查看 。可以使用ansible-doc -s module来查看某个模块的参数，也可以使用ansible-doc help module来查看该模块更详细的信息。
+`Ad-Hoc`是指ansible下临时执行的一条命令，并且不需要保存的命令，对于复杂的命令会使用playbook。Ad-hoc的执行依赖于模块，ansible官方提供了大量的模块，如：command、raw、shell、file、cron等。
+查看所有模块可以通过`ansible-doc -l`；
+查看某个模块的参数可以使用`ansible-doc -s module`；
+查看该模块更详细的信息可以使用`ansible-doc help module`。
+
+## Ad-hoc 
+### 1 命令说明
+一个ad-hoc命令的执行，需要按以下格式进行执行：
+```shell?linenums
+ansible 主机或组 -m 模块名 -a '模块参数'  ansible参数
+```
+- 主机或组，是在/etc/ansible/hosts 里进行指定的部分，当然动态Inventory 使用的是脚本从外部应用里获取的主机；
+- 模块名，可以通过`ansible-doc -l`查看目前安装的模块，默认不指定时，使用的是`command`模块，具体可以查看`/etc/ansible/ansible.cfg`的`“#module_name = command ”`部分，默认模块可以在该配置文件中进行修改；
+- 模块参数，可以通过`“ansible-doc -s 模块名”`查看具体的用法及后面的参数；
+- ansible参数，可以通过ansible命令的帮助信息里查看到，这里有很多参数可以供选择，如是否需要输入密码、是否sudo等。
+
+### 2 后台执行
+当命令执行时间比较长时，也可以放到后台执行，使用`-B`、`-P`参数，如下：
+```shell?linenums
+ansible all -B 3600-a "/usr/bin/long_running_operation --do-stuff" #后台执行命令3600s，-B 表示后台执行的时间
+ansible all -m async_status -a "jid=123456789"  #检查任务的状态
+ansible all -B 1800-P 60-a "/usr/bin/long_running_operation --do-stuff" #后台执行命令最大时间是1800s即30分钟，-P 每60s检查下状态，默认15s
+```
+
+二、命令执行模块
+命令执行模块包含如下 四个模块：
+command模块：该模块通过-a跟上要执行的命令可以直接执行，不过命令里如果有带有如下字符部分则执行不成功 “  "<", ">", "|",  "&" ；
+shell 模块：用法基本和command一样，不过其是通过/bin/sh进行执行，所以shell 模块可以执行任何命令，就像在本机执行一样；
+raw模块：用法和shell 模块一样 ，其也可以执行任意命令，就像在本机执行一样；
+script模块：其是将管理端的shell 在被管理主机上执行，其原理是先将shell 复制到远程主机，再在远程主机上执行，原理类似于raw模块。
+注：raw模块和comand、shell 模块不同的是其没有chdir、creates、removes参数，chdir参数的作用就是先切到chdir指定的目录后，再执行后面的命令，这在后面很多模块里都会有该参数 。
+command模块包含如下选项： 
+creates：一个文件名，当该文件存在，则该命令不执行 
+free_form：要执行的linux指令 
+chdir：在执行指令之前，先切换到该指定的目录 
+removes：一个文件名，当该文件不存在，则该选项不执行
+executable：切换shell来执行指令，该执行路径必须是一个绝对路径
+
+使用chdir的示例：
+ansible 192.168.1.1 -m command -a 'chdir=/tmp/test.txt touch test.file'
+ansible 192.168.1.1 -m shell -a 'chdir=/tmp/test.txt touch test2.file'
+ansible 192.168.1.1 -m raw -a 'chdir=/tmp/text.txt touch test3.file'
+三个命令都会返回执行成功的状态。不过实际上只有前两个文件会被创建成功。使用raw模块的执行的结果文件事实上也被正常创建了，不过不是在chdir指定的目录，而是在当前执行用户的家目录。
+creates与removes示例：
+ansible 192.168.1.1 -a 'creates=/tmp/server.txt uptime' #当/tmp/server.txt文件存在时，则不执行uptime指令
+ansible 192.168.1.1 -a 'removes=/tmp/server.txt uptime' #当/tmp/server.txt文件不存在时，则不执行uptime指令
+
+script模块示例：
+要执行的脚本文件script.sh内容如下：
+#/bin/bash
+ifconfig
+df -hT
+执行ansible指令：ansible 10.212.52.252 -m script -a 'script.sh' |egrep '>>|stdout'
+
 
 
 
