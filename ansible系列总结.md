@@ -396,6 +396,38 @@ ansible_*_interpreter     #其他解释器路径，用法与ansible_python_inter
 
 上面的示例中指定了三台主机，三台主机的用密码分别是P@ssw0rd、123456、45789，指定的ssh连接的用户名分别为root、breeze、bernie，ssh 端口分别为22、22、3055 ，这样在ansible命令执行的时候就不用再指令用户和密码等了。
 
+### 5 组内变量
+变量也可以通过组名，应用到组内的所有成员：
+```ini?linenums
+[test]
+host1
+host2
+[test:vars]
+ntp_server=192.168.1.10
+proxy=192.168.1.20
+```
+上面test组中包含两台主机，通过对test组指定==vars==变更，相应的host1和host2相当于相应的指定了ntp_server和proxy变量参数值 。
+
+### 6 组的包含与组内变量
+    [wuhan]
+    web1
+    web2
+    [suizhou]
+    web4
+    web3
+    [hubei:children]
+    wuhan
+    suizhou
+    [hubei:vars]
+    ntp_server=192.168.1.10
+    zabbix_server=192.168.1.10
+    [china:children]
+    hubei
+    hunan
+上面的示例中，指定了武汉组有web1、web2；随州组有web3、web4主机；又指定了一个湖北组，同时包含武汉和随州；同时为该组内的所有主机指定了2个vars变量。设定了一个组中国组，包含湖北、湖南。
+注：vars变量在ansible ad-hoc部分中基本用不到，主要用在ansible-playbook中。
+
+
 
 
   [1]: ./images/1502850110093.jpg
