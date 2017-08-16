@@ -1270,7 +1270,8 @@ validate ：The validation command to run before copying into place. The path to
 ansible test -m copy -a "src=/srv/myfiles/foo.conf dest=/etc/foo.conf owner=foo group=foo mode=0644"
     ansible test -m copy -a "src=/mine/ntp.conf dest=/etc/ntp.conf owner=root group=root mode=644 backup=yes"
     ansible test -m copy -a "src=/mine/sudoers dest=/etc/sudoers validate='visudo -cf %s'"
-五、service模块
+	
+## service模块
 用于管理服务
 该模块包含如下选项： 
 arguments：给命令行提供一些选项 
